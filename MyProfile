@@ -1,0 +1,82 @@
+<apex:page standardController="Contact" extensions="ContactExtensionController"> 
+  <apex:sectionHeader title="Profile" subtitle="{!Contact.name}"/> 
+      bc
+      <apex:pageBlock title="Profile Information">
+          <apex:pageBlockSection title="Profile Information" columns="2"> 
+             <apex:outputField title="Profile Owner" value="{!Contact.OwnerId}"/>
+             <apex:outputField title="Phone Number" value="{!Contact.Phone}"/>
+             <apex:outputField title="First Name" value="{!Contact.FirstName}"/>
+             <apex:outputField title="Mobile" value="{!Contact.MobilePhone}"/>
+             <apex:outputField title="Last Name" value="{!Contact.LastName}"/>
+             <apex:outputField title="Email Address" value="{!Contact.Email}"/>
+          </apex:pageBlockSection>
+         
+          <apex:pageBlockSection title="Address Information" columns="2">
+             <apex:outputField title="Mailing Street" value="{!Contact.MailingStreet}"/>
+             <apex:outputField title="Other Street" value="{!Contact.OtherStreet}"/>
+             <apex:outputField title="Mailing City" value="{!Contact.MailingCity}"/>
+             <apex:outputField title="Other City" value="{!Contact.OtherCity}"/>
+             <apex:outputField title="Mailing State/Province" value="{!Contact.MailingState}"/>
+             <apex:outputField title="Other State/Province" value="{!Contact.OtherState}"/>
+             <apex:outputField title="Mailing Zip/Postal Code" value="{!Contact.MailingPostalCode}"/>
+             <apex:outputField title="Other Zip/Postal Code" value="{!Contact.OtherPostalCode}"/>
+             <apex:outputField title="Mailing Country" value="{!Contact.MailingCountry}"/> 
+             <apex:outputField title="Other Country" value="{!Contact.OtherCountry}"/> 
+          </apex:pageBlockSection> 
+          
+          <apex:pageBlockSection title="Additional Information" columns="2"> 
+             <apex:outputField title="Home Phone" value="{!Contact.HomePhone}"/>
+             <apex:outputField title="Number of Employees" value="{!Contact.Number_of_Employees__c}"/> 
+             <apex:outputField title="Other Phone" value="{!Contact.OtherPhone}"/> 
+             <apex:outputField title="Date of Birth" value="{!Contact.Birthdate}"/>
+          </apex:pageBlockSection> 
+          
+          <apex:pageBlockSection title="Description Information" columns="1"> 
+              <apex:outputField title="Description" value="{!Contact.Description}"/> 
+          </apex:pageBlockSection>
+          
+        <!--  <apex:pageBlockSection title="System Information" columns="2"> 
+              <apex:outputField title="Account Name" value="{!Contact.AccountId}"/> 
+              <apex:outputField title="Allow Customer Portal Self-Registration" value="{!Contact.CanAllowPortalSelfReg}"/>
+          </apex:pageBlockSection> 
+          -->
+      </apex:pageBlock>  
+  
+  <!-- Native Related List -->
+  <!--<apex:relatedList subject="{!contactId}" list="Client_Applications__r" />-->
+  
+  <!-- Client Applications --> 
+  <apex:pageBlock title="Client Applications"> 
+  <apex:pageBlockTable value="{!ClientApplications}" var="CApps"> 
+      <apex:column headerValue="Client Application Name">
+         <apex:outputLink value="/{!CApps.Id}">{!CApps.Name}</apex:outputlink>   
+      </apex:column>
+         <apex:column headerValue="Application Number"  value="{!CApps.Application__c}"/> 
+      <apex:column headerValue="Representative">
+          <apex:outputlink value="/apex/MyProfile?id={!CApps.Representative__c}">{!CApps.Representative__r.Name}</apex:outputlink>
+      </apex:column>
+         <apex:column headerValue="Type" value="{!CApps.Application__r.Type}"/> 
+         <apex:column headerValue="Status" value="{!CApps.Application__r.Status}" /> 
+  </apex:pageBlockTable>  
+ </apex:pageBlock>
+  
+  <!-- Activity History -->
+  <apex:pageBlock title="Activity History"> 
+     <apex:pageBlockTable value="{!ActivityHistories}" var="aHistory"> 
+         <apex:column headerValue="Subject"  value="{!aHistory.Subject}"/>
+         <apex:column headerValue="Due Date"  value="{!aHistory.ActivityDate}"/>
+         <apex:column headerValue="Description"  value="{!aHistory.Description}"/>
+         <apex:column headerValue="Assigned To" value="{!aHistory.OwnerId}"/>
+     </apex:pageBlockTable>  
+  </apex:pageBlock>
+ 
+  <!-- Open Activities -->
+  <apex:pageBlock title="Open Activites"> 
+     <apex:pageBlockTable value="{!OpenActivities}" var="oActivities"> 
+         <apex:column headerValue="Subject"  value="{!oActivities.Subject}"/>
+         <apex:column headerValue="Due Date"  value="{!oActivities.ActivityDate}"/>
+     </apex:pageBlockTable>  
+  </apex:pageBlock>
+  
+  <!-- Notes And Attachments -->
+</apex:page>
