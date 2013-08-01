@@ -1,0 +1,60 @@
+public class ContactExtensionController {
+    
+    String userId;
+    List <User> listUser;
+    List <Contact> listContact;
+    String contactId;
+    List <Client_Application__c> listClientApplications; 
+    
+    //Activity History Related List
+    List <ActivityHistory> listActivityHistory = new list <ActivityHistory>();
+    List <Contact> listContactActivityHistory;
+    
+    //Open Activities Related List
+    List<OpenActivity> openActivityList = new List<OpenActivity>();
+    
+    public ContactExtensionController(ApexPages.StandardController controller) {
+        userId = userInfo.getUserId();
+        //Validate there is only one
+        listUser = [Select firstName, lastName, email from user where id =:userId];
+        
+        
+        //Validate there is only one
+        listContact = [Select Id, Salutation, firstName, lastName, email, Phone, MobilePhone from Contact where firstName =: listUser[0].firstName and lastName=: listUser[0].lastName and email =: listUser[0].email];
+        contactId = listContact[0].Id;
+    }
+
+    public string getContactId(){
+            return contactId;
+    }
+    
+    public List<Client_Application__c> getClientApplications() {
+        listClientApplications = [select id, name, Application__c, Contact__c, Representative__c, Application__r.Status, Application__r.Type, Representative__r.Name from Client_Application__c where Contact__c =: contactId];
+        return listClientApplications;
+    }
+    
+   public List<ActivityHistory> getActivityHistories(){ 
+        for(Contact con : [Select (Select Subject, isTask, whoId, who.name, Description, LastModifiedDate, OwnerId, ActivityDate, Priority From ActivityHistories) from Contact where ID =: contactId]){
+           if(!con.ActivityHistories.isempty()){
+            for(ActivityHistory ahistory : con.ActivityHistories){
+              listActivityHistory.add(ahistory);
+            }
+          }
+          else listActivityHistory = null;
+        }
+        return listActivityHistory ;
+   }
+   
+   public List<OpenActivity> getOpenActivities(){
+       for(Contact con : [Select (Select Subject, What.Name , WhatId, IsTask, ActivityDate, who.name From OpenActivities) from Contact where ID =: contactId]){
+          if(!con.OpenActivities.isempty()){
+              for(OpenActivity oActivity : con.OpenActivities){
+                  openActivityList.add(con.OpenActivities);
+              }
+          } 
+       }
+       
+       return openActivityList;
+   }
+   
+}
