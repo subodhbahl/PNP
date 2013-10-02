@@ -1,0 +1,5 @@
+<script>
+  var gethometab=document.getElementById('home_Tab');
+ gethometab.getElementsByTagName("a")[0].setAttribute("title","test");
+  gethometab.getElementsByTagName("a")[0].innerHTML="Welcome To BC PNP";
+ </script>
